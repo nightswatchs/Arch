@@ -22,10 +22,13 @@ FAQ:
   * Available fonts is in: /usr/share/kbd/consolefonts/
   * setfont \*lat9w-16\*
   * *language?*
-* Internet:
-  * wifi:
+* Internet:(hash可以保密)
+  * wifi:(netctl自带的)
     * wifi-menu -o wlp2s0
-    * or iw dev wlan0 scan
-    * 修改:# ip link set dev wlp13s1 up
-        # wpa_supplicant -B -i wlp13s1 /etc/wpa_supplicant/wpa_supplicant.conf
-        # dhcpcd wlp13s1
+    * 复制/etc/netctl/examples/eduroam to /etc/netctl/eduroam
+    * 然后修改文件就可以
+* 时间
+  * timedatectl status(查看状态)
+  * timedatectl set-ntp true(确保时间同步)
+* Storage(卸载掉windows)
+* 测试共享软件：测试成功OK
