@@ -1,0 +1,31 @@
+FAQ:
+---
+1. What's Arch Linux?
+  * User centrality
+    * The distribution is intended to fill the needs of those *contributing to it*,rather than trying to *appeal to as many as user as possible*
+    * It is targeted at the proficient(专业的) GNU/Linux user, or anyone with a *do-it-yourself* attitude who is willing to read the *documentation*, and solve their own problems.
+  * Simplicity
+    * Arch Linux defines Simplicity as without unnecessary additions or modifications.
+    * **Minimal-distribution-specific**
+  * Modernity
+    * *rolling-release*
+    * *systemd*
+  * Pragmatism
+  * Versatility
+    * Upon installation, only a command-line environment is provided: rather than tearing out unneeded and unwanted packages, the user is offered the a custom system by choosing among thousands of high-quality packages provided in the official repositories
+* official repositories:
+* systemd
+* keyboard layout
+  * default: us(needn't to change)
+  * loadkeys \*de-latin1\*
+* fonts:
+  * Available fonts is in: /usr/share/kbd/consolefonts/
+  * setfont \*lat9w-16\*
+  * *language?*
+* Internet:
+  * wifi:
+    * wifi-menu -o wlp2s0
+    * or iw dev wlan0 scan
+    * 修改:# ip link set dev wlp13s1 up
+        # wpa_supplicant -B -i wlp13s1 /etc/wpa_supplicant/wpa_supplicant.conf
+        # dhcpcd wlp13s1
