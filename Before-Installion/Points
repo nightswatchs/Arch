@@ -31,4 +31,24 @@ FAQ:
   * timedatectl status(查看状态)
   * timedatectl set-ntp true(确保时间同步)
 * Storage(卸载掉windows)
-* 测试共享软件：测试成功OK
+  * lsblk(list all devices)
+  * 分区表：parted /dev/sda print
+    `(parted) mkpart primary ext4 513MiB 20.5GiB
+    (parted) mkpart primary linux-swap 20.5GiB 24.5GiB
+    (parted) mkpart primary ext4 24.5GiB 100%
+    `
+
+* 格式化文件系统和交换空间
+  * 显示分区表 lsblk /dev/sda
+  * mkfs.ext4 /dev/sdxy
+  * swap:
+    * mkswap /dev/sday
+    * swapon /dev/sdxy
+    * 挂载在/mnt
+      * mount /dev/sday /mnt
+  * /boot
+    * mkdir -p /mnt/boot
+    * mount /dev/sdaZ /mnt/boot
+* 测试共享软件：测试成功O
+* 镜像：
+  * /etc/pacman.d/mirrorlist
