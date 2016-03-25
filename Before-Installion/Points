@@ -19,36 +19,91 @@ FAQ:
   * default: us(needn't to change)
   * loadkeys \*de-latin1\*
 * fonts:
-  * Available fonts is in: /usr/share/kbd/consolefonts/
-  * setfont \*lat9w-16\*
+  * Available fonts is in: */usr/share/kbd/consolefonts/*
+  * **setfont \*lat9w-16\***
   * *language?*
 * Internet:(hash可以保密)
   * wifi:(netctl自带的)
-    * wifi-menu -o wlp2s0
-    * 复制/etc/netctl/examples/eduroam to /etc/netctl/eduroam
+    * **wifi-menu -o wlp2s0**
+    * 复制**cp /etc/netctl/examples/wireless-wpa  /etc/netctl/**
     * 然后修改文件就可以
+    * 开启： **netctl start wireless-wpa**
 * 时间
-  * timedatectl status(查看状态)
-  * timedatectl set-ntp true(确保时间同步)
+  * `timedatectl status`(查看状态)
+  * `timedatectl set-ntp true`(确保时间同步)
 * Storage(卸载掉windows)
-  * lsblk(list all devices)
-  * 分区表：parted /dev/sda print
-    `(parted) mkpart primary ext4 513MiB 20.5GiB
+  * `lsblk`(list all devices)
+  * 分区表：`parted /dev/sda
+    (parted) mkpart primary ext4 513MiB 20.5GiB
     (parted) mkpart primary linux-swap 20.5GiB 24.5GiB
     (parted) mkpart primary ext4 24.5GiB 100%
     `
 
 * 格式化文件系统和交换空间
-  * 显示分区表 lsblk /dev/sda
-  * mkfs.ext4 /dev/sdxy
-  * swap:
-    * mkswap /dev/sday
-    * swapon /dev/sdxy
-    * 挂载在/mnt
-      * mount /dev/sday /mnt
-  * /boot
-    * mkdir -p /mnt/boot
-    * mount /dev/sdaZ /mnt/boot
+  * 显示分区表 `lsblk /dev/sda`
+  * `mkfs.ext4 /dev/sdxy`
+  * `swap:
+      mkswap /dev/sday
+      swapon /dev/sdxy`
+
+  * 挂载在/mnt
+      * `mount /dev/sday /mnt`
+  * /boot /home
+    * `mkdir -p /mnt/boot`
+    * `mount /dev/sdaZ /mnt/boot`
 * 测试共享软件：测试成功O
-* 镜像：
-  * /etc/pacman.d/mirrorlist
+* 镜像源(修改)：
+  *  `nano /etc/pacman.d/mirrorlist (这是镜像源)
+      rsync://mirrors.hust.edu.cn/archlinux/(华科源)
+      http://mirrors.cqu.edu.cn/archlinux/ (重庆大学镜像源)
+      http://mirrors.sohu.com/archlinux/ `(搜狐源)/为什么人家的都有开源库，不开心。
+* 安装基础包:
+  * `pacstrap -i /mnt base base-devel`(网络)
+* 设置：
+  * 生成fstab文件
+    * `genfstab -U /mnt >> /mnt/etc/fstab`
+  * root用户
+    * `arch-chroot /mnt /bin/bash`
+  * Locale(language,currency denomination, numerology,?? character sets)
+    * possible values are listed in */etc/locale.gen*
+    * generate the new locales: **locale-gen**
+    * creat */etc/locale.conf*
+      * LANG=en_US.UTF-8
+  * Time:
+    * select a time zone:
+      * **tzselect**
+      * creat */etc/localetime*,*Zone/Subzone* is *TZ* value frome tzselect
+        * **ln -s /usr/share/zoneinfo/Zone/Subzone /etc/localetime**
+    * sync
+      * **hwclock --systohc --utc**
+  * Initramfs
+    * re-generate */etc/mkinitcpio.conf*
+    * **mkinitcpio -p linux**
+  * Boot loader:
+    * 安装pacage *intel-ucode*
+    * **pacman -S package_name**
+    * install grub package:     
+     >应该不用安装os-prober
+
+      * 寻找其他系统就要安装 os-prober :**pacman -S grub os-prober**
+      * **grub-install --target=i386-pc /dev/sda**(--force)
+      * generate grub.cfg
+        * **grub-mkconfig -o /boot/grub/grub.cfg**
+  * Configure the network
+    * Hostname:
+      * */etc/hostname*
+      * set hostname
+        * **hostname set-hostname myhostname**
+    * wireless:
+      * Install iw,wpa_suppliant dialog
+        * **pacman -S iw wpa_suppliant dialog**
+    * Root password
+      * **passwd**
+  * Unmount the partitions and reboot
+    * Exit form the chroot environment by Exit
+    * umount -R /mnt
+    * If the partition is "busy".??
+  * reboot
+* KDE:
+  * pacman plasma
+  * xorg-server
